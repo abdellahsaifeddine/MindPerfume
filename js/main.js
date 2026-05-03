@@ -83,6 +83,15 @@
     document.querySelectorAll(".lang-switch button").forEach(function (btn) {
       btn.setAttribute("aria-pressed", btn.getAttribute("data-lang") === lang ? "true" : "false");
     });
+
+    var navSocial = document.querySelector(".social-footer");
+    if (navSocial && t.footerSocialNav) {
+      navSocial.setAttribute("aria-label", t.footerSocialNav);
+    }
+    var ig = document.querySelector('a[data-social="instagram"]');
+    var tk = document.querySelector('a[data-social="tiktok"]');
+    if (ig && t.socialInstagramAria) ig.setAttribute("aria-label", t.socialInstagramAria);
+    if (tk && t.socialTiktokAria) tk.setAttribute("aria-label", t.socialTiktokAria);
   }
 
   document.querySelectorAll(".lang-switch button").forEach(function (btn) {

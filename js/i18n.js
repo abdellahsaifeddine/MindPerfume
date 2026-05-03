@@ -53,6 +53,9 @@ window.MIND_I18N = {
     contactBody:
       "The full shopping experience on MindPerfume.ma is on its way. For partnerships, press, or to be notified at launch, reach us by email.",
     contactCta: "Write to us",
+    footerSocialNav: "Social media",
+    socialInstagramAria: "MindPerfume on Instagram — opens in a new tab",
+    socialTiktokAria: "MindPerfume on TikTok — opens in a new tab",
     footerTagline: "MindPerfume.ma — luxury fragrance, rooted in Morocco.",
   },
   fr: {
@@ -106,6 +109,9 @@ window.MIND_I18N = {
     contactBody:
       "La boutique en ligne MindPerfume.ma arrive. Pour partenariats, presse ou alerte lancement, écrivez-nous.",
     contactCta: "Nous écrire",
+    footerSocialNav: "Réseaux sociaux",
+    socialInstagramAria: "MindPerfume sur Instagram — s’ouvre dans un nouvel onglet",
+    socialTiktokAria: "MindPerfume sur TikTok — s’ouvre dans un nouvel onglet",
     footerTagline: "MindPerfume.ma — parfumerie d’exception, ancrée au Maroc.",
   },
   ar: {
@@ -159,6 +165,9 @@ window.MIND_I18N = {
     contactBody:
       "تجربة التسوق الكاملة على MindPerfume.ma قيد الإعداد. للشراكات أو الإعلام أو التنبيه عند الإطلاق، راسلنا.",
     contactCta: "راسلنا",
+    footerSocialNav: "وسائل التواصل",
+    socialInstagramAria: "مايند بيرفيوم على إنستغرام — يفتح في تبويب جديد",
+    socialTiktokAria: "مايند بيرفيوم على تيك توك — يفتح في تبويب جديد",
     footerTagline: "MindPerfume.ma — عطور راقية، من أرض المغرب.",
   },
 };
