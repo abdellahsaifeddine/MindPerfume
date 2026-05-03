@@ -3,5 +3,5 @@
  * Exemple Maroc : 2126xxxxxxxx
  */
 window.MIND_CONFIG = {
-  whatsappE164: "212612345678",
+  whatsappE164: "212691658691",
 };
