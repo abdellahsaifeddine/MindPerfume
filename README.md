@@ -6,7 +6,8 @@ Site vitrine statique pour **MindPerfume** — domaine **MindPerfume.ma**.
 
 ## Contenu
 
-- Bannière hero, bandeau sous-bannières, textes, description, ambiance (Vibe), thème (Theme), section **Coming soon / Contact** (`hello@mindperfume.ma`)
+- Bannière hero, **boutique** (parfums, panier, `checkout.html`), textes, description, ambiance (Vibe), thème (Theme), section **Coming soon / Contact** (`hello@mindperfume.ma`)
+- Panier en **localStorage** → page commande → ouverture **WhatsApp** avec récapitulatif (produits, quantités, total, téléphone, adresse, notes)
 - Versions **anglais**, **français**, **arabe** (RTL) avec sélecteur de langue
 - Balises **meta** description / keywords par langue ; **`hreflang`** (`en`, `fr`, `ar`, `x-default`) vers `https://mindperfume.ma/`
 
@@ -40,6 +41,10 @@ Utilisez un **CNAME** : nom **`www`**, cible **`abdellahsaifeddine.github.io`** 
 
 Ensuite, dans le dépôt : **Settings → Pages → Custom domain** : `mindperfume.ma` (et éventuellement cocher **Enforce HTTPS** une fois le certificat actif).
 
+### WhatsApp (à configurer)
+
+Éditez **`js/config.js`** : remplacez **`whatsappE164`** par votre numéro WhatsApp Business, **sans le `+`** (ex. Maroc : `2126xxxxxxxx`). Le catalogue et les prix sont dans **`js/products-data.js`**.
+
 ---
 
-Projet statique : `index.html`, `css/`, `js/`.
+Projet statique : `index.html`, `checkout.html`, `css/`, `js/`.

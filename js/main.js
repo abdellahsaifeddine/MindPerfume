@@ -71,6 +71,11 @@
       ["data-i18n-contact-body", t.contactBody],
       ["data-i18n-contact-cta", t.contactCta],
       ["data-i18n-footer-tagline", t.footerTagline],
+      ["data-i18n-shop-label", t.shopLabel],
+      ["data-i18n-shop-title", t.shopTitle],
+      ["data-i18n-cart-title", t.cartTitle],
+      ["data-i18n-cart-total-label", t.cartTotalLabel],
+      ["data-i18n-cart-checkout", t.cartCheckout],
     ];
 
     map.forEach(function (pair) {
@@ -92,6 +97,13 @@
     var tk = document.querySelector('a[data-social="tiktok"]');
     if (ig && t.socialInstagramAria) ig.setAttribute("aria-label", t.socialInstagramAria);
     if (tk && t.socialTiktokAria) tk.setAttribute("aria-label", t.socialTiktokAria);
+
+    var cartBtn = document.querySelector(".cart-trigger");
+    if (cartBtn && t.cartAriaOpen) cartBtn.setAttribute("aria-label", t.cartAriaOpen);
+    var cartClose = document.querySelector("[data-cart-close]");
+    if (cartClose && t.cartCloseAria) cartClose.setAttribute("aria-label", t.cartCloseAria);
+
+    window.dispatchEvent(new CustomEvent("mindperfume:lang", { detail: { lang: lang } }));
   }
 
   document.querySelectorAll(".lang-switch button").forEach(function (btn) {
@@ -101,7 +113,7 @@
   });
 
   document.querySelector(".banner__cta")?.addEventListener("click", function () {
-    document.getElementById("description")?.scrollIntoView({ behavior: "smooth" });
+    document.getElementById("shop")?.scrollIntoView({ behavior: "smooth" });
   });
 
   var header = document.querySelector(".site-header");

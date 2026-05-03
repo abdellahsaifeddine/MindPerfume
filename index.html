@@ -41,12 +41,29 @@
     <a class="skip-link" href="#main">Skip to content</a>
 
     <header class="site-header" role="banner">
-      <div class="logo logo--living" aria-label="MindPerfume">Mind<span>Perfume</span></div>
-      <nav class="lang-switch" aria-label="Language">
+      <a href="index.html" class="logo-link logo logo--living">Mind<span>Perfume</span></a>
+      <div class="site-header__actions">
+        <button
+          type="button"
+          class="cart-trigger"
+          aria-expanded="false"
+          aria-controls="cart-drawer"
+          aria-label="Cart"
+        >
+          <svg class="cart-trigger__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              fill="currentColor"
+              d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1.003 1.003 0 0 0 20 4H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"
+            />
+          </svg>
+          <span class="cart-trigger__badge" data-cart-count hidden>0</span>
+        </button>
+        <nav class="lang-switch" aria-label="Language">
         <button type="button" data-lang="en" aria-pressed="true">EN</button>
         <button type="button" data-lang="fr" aria-pressed="false">FR</button>
         <button type="button" data-lang="ar" aria-pressed="false">عربي</button>
-      </nav>
+        </nav>
+      </div>
     </header>
 
     <main id="main">
@@ -87,6 +104,13 @@
           <p class="under-banners__label" data-i18n-under3-label>MindPerfume.ma</p>
           <p class="under-banners__sub" data-i18n-under3-sub>Your domain</p>
         </div>
+      </section>
+
+      <!-- Shop -->
+      <section id="shop" class="section section--wide shop-section">
+        <p class="section__label reveal reveal--line" data-i18n-shop-label>Shop</p>
+        <h2 class="section__title reveal" data-i18n-shop-title>Choose your fragrance</h2>
+        <div class="shop-grid reveal" id="shop-grid"></div>
       </section>
 
       <!-- Texts -->
@@ -215,7 +239,31 @@
       <p class="fine" data-i18n-footer-tagline>MindPerfume.ma — luxury fragrance, rooted in Morocco.</p>
     </footer>
 
+    <div id="cart-overlay" class="cart-overlay" hidden></div>
+    <aside id="cart-drawer" class="cart-drawer" hidden aria-hidden="true" aria-labelledby="cart-drawer-title">
+      <div class="cart-drawer__inner">
+        <div class="cart-drawer__head">
+          <h2 id="cart-drawer-title" class="cart-drawer__title" data-i18n-cart-title>Cart</h2>
+          <button type="button" class="cart-drawer__close" data-cart-close aria-label="Close">&times;</button>
+        </div>
+        <div class="cart-drawer__body" id="cart-lines"></div>
+        <div class="cart-drawer__foot">
+          <p class="cart-total">
+            <span data-i18n-cart-total-label>Total</span>
+            <strong id="cart-total-value">0 MAD</strong>
+          </p>
+          <button type="button" id="cart-checkout-btn" class="banner__cta cart-drawer__checkout" data-i18n-cart-checkout>
+            Proceed to checkout
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <script src="js/config.js"></script>
+    <script src="js/products-data.js"></script>
+    <script src="js/cart.js"></script>
     <script src="js/i18n.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/cart-ui.js"></script>
   </body>
 </html>
