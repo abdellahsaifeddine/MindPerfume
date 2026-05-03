@@ -1057,8 +1057,10 @@ html[dir="rtl"] .cart-drawer {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 1rem;
   padding: 1.25rem 1.25rem 0.75rem;
   border-bottom: 1px solid var(--line);
+  flex-shrink: 0;
 }
 
 .cart-drawer__title {
@@ -1069,15 +1071,23 @@ html[dir="rtl"] .cart-drawer {
 }
 
 .cart-drawer__close {
-  width: 2.25rem;
-  height: 2.25rem;
+  position: relative;
+  z-index: 5;
+  flex-shrink: 0;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  margin: 0;
   border: 1px solid var(--line);
-  background: transparent;
-  color: var(--muted);
-  font-size: 1.35rem;
+  background: var(--surface);
+  color: var(--champagne);
+  font-size: 1.5rem;
   line-height: 1;
   cursor: pointer;
   border-radius: 2px;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  pointer-events: auto;
 }
 
 .cart-drawer__close:hover {

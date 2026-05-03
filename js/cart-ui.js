@@ -183,7 +183,6 @@
         window.MindCart.add(id, 1);
         renderCart();
         updateBadge();
-        openCart();
       });
     }
 
@@ -196,10 +195,23 @@
     }
 
     var overlay = document.getElementById("cart-overlay");
-    if (overlay) overlay.addEventListener("click", closeCart);
+    if (overlay) {
+      overlay.addEventListener("click", function (e) {
+        e.preventDefault();
+        closeCart();
+      });
+    }
 
-    var closeBtn = document.querySelector("[data-cart-close]");
-    if (closeBtn) closeBtn.addEventListener("click", closeCart);
+    function bindCloseCart(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      closeCart();
+    }
+
+    var closeBtn = document.getElementById("cart-close-btn") || document.querySelector("[data-cart-close]");
+    if (closeBtn) {
+      closeBtn.addEventListener("click", bindCloseCart, true);
+    }
 
     var checkoutBtn = document.getElementById("cart-checkout-btn");
     if (checkoutBtn) {
