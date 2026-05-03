@@ -66,6 +66,10 @@
       ["data-i18n-kw-label", t.keywordsSectionLabel],
       ["data-i18n-kw-intro", t.keywordsIntro],
       ["data-i18n-keywords-list", t.keywordsList],
+      ["data-i18n-contact-coming", t.contactComing],
+      ["data-i18n-contact-title", t.contactTitle],
+      ["data-i18n-contact-body", t.contactBody],
+      ["data-i18n-contact-cta", t.contactCta],
       ["data-i18n-footer-tagline", t.footerTagline],
     ];
 

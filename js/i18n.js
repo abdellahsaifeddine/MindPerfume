@@ -48,6 +48,11 @@ window.MIND_I18N = {
     keywordsList:
       "MindPerfume · MindPerfume.ma · Mind Perfume Morocco · niche perfume · luxury fragrance Rabat Casablanca Marrakech · parfum Maroc · online perfume shop · عطر فاخر المغرب · متجر عطور",
     vibeSubtitle: "The MindPerfume atmosphere",
+    contactComing: "Coming soon",
+    contactTitle: "Contact & early access",
+    contactBody:
+      "The full shopping experience on MindPerfume.ma is on its way. For partnerships, press, or to be notified at launch, reach us by email.",
+    contactCta: "Write to us",
     footerTagline: "MindPerfume.ma — luxury fragrance, rooted in Morocco.",
   },
   fr: {
@@ -96,6 +101,11 @@ window.MIND_I18N = {
     keywordsList:
       "MindPerfume · MindPerfume.ma · parfum Maroc · parfumerie en ligne · niche · luxe Rabat Casablanca Marrakech · boutique parfum · عطر فاخر المغرب · متجر عطور",
     vibeSubtitle: "L’atmosphère MindPerfume",
+    contactComing: "Bientôt",
+    contactTitle: "Contact & accès anticipé",
+    contactBody:
+      "La boutique en ligne MindPerfume.ma arrive. Pour partenariats, presse ou alerte lancement, écrivez-nous.",
+    contactCta: "Nous écrire",
     footerTagline: "MindPerfume.ma — parfumerie d’exception, ancrée au Maroc.",
   },
   ar: {
@@ -144,6 +154,11 @@ window.MIND_I18N = {
     keywordsList:
       "MindPerfume · MindPerfume.ma · مايند بيرفيوم المغرب · عطر فاخر · عطور نيش · الرباط الدار البيضاء مراكش · متجر عطور أونلاين · luxury perfume Morocco",
     vibeSubtitle: "أجواء مايند بيرفيوم",
+    contactComing: "قريباً",
+    contactTitle: "تواصل ووصول مبكر",
+    contactBody:
+      "تجربة التسوق الكاملة على MindPerfume.ma قيد الإعداد. للشراكات أو الإعلام أو التنبيه عند الإطلاق، راسلنا.",
+    contactCta: "راسلنا",
     footerTagline: "MindPerfume.ma — عطور راقية، من أرض المغرب.",
   },
 };

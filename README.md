@@ -2,26 +2,43 @@
 
 Site vitrine statique pour **MindPerfume** — domaine **MindPerfume.ma**.
 
+**Dépôt GitHub :** [github.com/abdellahsaifeddine/MindPerfume](https://github.com/abdellahsaifeddine/MindPerfume)
+
 ## Contenu
 
-- Bannière hero, bandeau sous-bannières, textes, description, ambiance (Vibe), thème (Theme)
+- Bannière hero, bandeau sous-bannières, textes, description, ambiance (Vibe), thème (Theme), section **Coming soon / Contact** (`hello@mindperfume.ma`)
 - Versions **anglais**, **français**, **arabe** (RTL) avec sélecteur de langue
-- Balises **meta** description / keywords par langue (via JavaScript au changement de langue)
+- Balises **meta** description / keywords par langue ; **`hreflang`** (`en`, `fr`, `ar`, `x-default`) vers `https://mindperfume.ma/`
 
-## Hébergement GitHub Pages
+## URLs GitHub Pages
 
-1. Créer un dépôt sur GitHub (par ex. `MindPerfume`) et pousser ce dossier.
-2. Sur le dépôt : **Settings → Pages**.
-3. **Source** : déployer depuis la branche `main` (ou `master`), dossier **`/ (root)`**.
-4. Après le premier déploiement, dans **Pages → Custom domain**, saisir **`MindPerfume.ma`** et activer **Enforce HTTPS** une fois le certificat prêt.
+| URL | Usage |
+|-----|--------|
+| `https://abdellahsaifeddine.github.io/MindPerfume/` | Site projet (toujours disponible après déploiement) |
+| `https://mindperfume.ma/` | Domaine personnalisé (après DNS + vérif GitHub) |
 
-## Domaine MindPerfume.ma
+Pages est configurée sur la branche **`main`**, dossier **`/`** (racine).
 
-Chez votre registrar, ajoutez un enregistrement **CNAME** :
+## Domaine personnalisé (MindPerfume.ma)
 
-- **Nom / Host** : `@` ou `www` selon votre choix (souvent `www` → `votre-user.github.io` pour un sous-domaine ; pour la racine `@`, GitHub documente les enregistrements **A** pour `185.199.108.x` etc.).
+Le fichier **`CNAME`** à la racine contient le nom de domaine pour GitHub Pages.
 
-Le fichier **`CNAME`** à la racine du dépôt contient `MindPerfume.ma` pour que GitHub Pages associe le domaine personnalisé.
+### Apex (`mindperfume.ma` sans `www`)
+
+Chez votre **registrar**, créez des enregistrements **A** pour `@` pointant vers :
+
+- `185.199.108.153`
+- `185.199.109.153`
+- `185.199.110.153`
+- `185.199.111.153`
+
+(Documentation GitHub : [Managing a custom domain](https://docs.github.com/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site))
+
+### Sous-domaine `www`
+
+Utilisez un **CNAME** : nom **`www`**, cible **`abdellahsaifeddine.github.io`** (remplacez si votre compte GitHub change).
+
+Ensuite, dans le dépôt : **Settings → Pages → Custom domain** : `mindperfume.ma` (et éventuellement cocher **Enforce HTTPS** une fois le certificat actif).
 
 ---
 

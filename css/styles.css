@@ -371,6 +371,26 @@ a:hover {
   margin: 0;
 }
 
+/* Contact */
+.contact {
+  border-top: 1px solid var(--line);
+  padding-top: var(--space-section);
+}
+
+.contact__email {
+  margin: 1.5rem 0 0.5rem;
+}
+
+.contact__mailto {
+  display: inline-flex;
+  text-decoration: none;
+}
+
+.contact__addr {
+  margin: 0;
+  letter-spacing: 0.04em;
+}
+
 /* RTL tweaks */
 html[dir="rtl"] .banner__content,
 html[dir="rtl"] .section {
