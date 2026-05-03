@@ -124,6 +124,8 @@
     var overlay = document.getElementById("cart-overlay");
     var trigger = document.querySelector(".cart-trigger");
     if (!drawer || !overlay) return;
+    drawer.removeAttribute("hidden");
+    overlay.removeAttribute("hidden");
     drawer.hidden = false;
     overlay.hidden = false;
     drawer.setAttribute("aria-hidden", "false");
@@ -136,6 +138,8 @@
     var overlay = document.getElementById("cart-overlay");
     var trigger = document.querySelector(".cart-trigger");
     if (!drawer || !overlay) return;
+    drawer.setAttribute("hidden", "");
+    overlay.setAttribute("hidden", "");
     drawer.hidden = true;
     overlay.hidden = true;
     drawer.setAttribute("aria-hidden", "true");
@@ -171,6 +175,8 @@
   }
 
   function init() {
+    closeCart();
+
     var grid = document.getElementById("shop-grid");
     if (grid) {
       grid.addEventListener("click", function (e) {

@@ -1016,11 +1016,22 @@ html[dir="rtl"] .cart-trigger__badge {
   justify-content: center;
 }
 
+/*
+ * Sans ces règles, `.cart-drawer { display: flex }` peut écraser l’attribut HTML
+ * `hidden` : le panier reste visible au chargement et la fermeture ne fonctionne pas.
+ */
+#cart-overlay[hidden],
+#cart-drawer[hidden] {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
 .cart-overlay {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.55);
-  z-index: 90;
+  z-index: 900;
   backdrop-filter: blur(4px);
 }
 
@@ -1030,12 +1041,13 @@ html[dir="rtl"] .cart-trigger__badge {
   right: 0;
   width: min(100%, 420px);
   height: 100%;
-  z-index: 100;
+  z-index: 950;
   background: var(--bg-deep);
   border-left: 1px solid var(--line);
   display: flex;
   flex-direction: column;
   box-shadow: -16px 0 48px rgba(0, 0, 0, 0.45);
+  isolation: isolate;
 }
 
 html[dir="rtl"] .cart-drawer {
