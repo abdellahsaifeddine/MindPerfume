@@ -1,50 +1,50 @@
 # MindPerfume.ma
 
-Site vitrine statique pour **MindPerfume** — domaine **MindPerfume.ma**.
+Site vitrine mono-produit — **Mystique · Mon Vétiver** (Eau de Parfum 50ml, 300 MAD).
 
-**Dépôt GitHub :** [github.com/abdellahsaifeddine/MindPerfume](https://github.com/abdellahsaifeddine/MindPerfume)
+## Structure des fichiers
 
-## Contenu
+```
+.
+├── index.html        → page HTML (structure + SEO)
+├── styles.css        → tout le style (design + dashboard)
+├── app.js            → toute la logique (panier, lightbox, dashboard…)
+├── assets/img/       → 5 images (extraites, dédupliquées)
+│   ├── img-01.png    → photo hero / og:image
+│   ├── img-02.jpg    → flacon (utilisé aussi par le panier)
+│   ├── img-03.jpg    → pyramide olfactive
+│   ├── img-04.png
+│   └── img-05.png
+├── robots.txt        → autorise l'indexation + pointe le sitemap
+├── sitemap.xml       → plan du site pour Google
+└── CNAME             → domaine personnalisé (MindPerfume.ma)
+```
 
-- Bannière hero, **boutique** (parfums, panier, `checkout.html`), textes, description, ambiance (Vibe), thème (Theme), section **Coming soon / Contact** (`hello@mindperfume.ma`)
-- Panier en **localStorage** → page commande → ouverture **WhatsApp** avec récapitulatif (produits, quantités, total, téléphone, adresse, notes)
-- Versions **anglais**, **français**, **arabe** (RTL) avec sélecteur de langue
-- Balises **meta** description / keywords par langue ; **`hreflang`** (`en`, `fr`, `ar`, `x-default`) vers `https://mindperfume.ma/`
+> Avant : un seul `index.html` de **3,8 Mo** (images en base64, CSS + JS inline).
+> Après : `index.html` de **~32 Ko** + fichiers séparés. Images passées de 14 (dupliquées) à 5 uniques.
 
-## URLs GitHub Pages
+## Mise en ligne (GitHub Pages)
 
-| URL | Usage |
-|-----|--------|
-| `https://abdellahsaifeddine.github.io/MindPerfume/` | Site projet (toujours disponible après déploiement) |
-| `https://mindperfume.ma/` | Domaine personnalisé (après DNS + vérif GitHub) |
+1. Pousser tous ces fichiers à la racine de la branche `main`.
+2. Settings → Pages → Source : `main` / `/ (root)`.
+3. Le fichier `CNAME` garde le domaine `MindPerfume.ma`.
 
-Pages est configurée sur la branche **`main`**, dossier **`/`** (racine).
+## SEO — pour apparaître dans Google (et sans taper « .ma »)
 
-## Domaine personnalisé (MindPerfume.ma)
+Ajouté dans cette version :
+- balise `<title>` et `<meta description>` optimisées + mots-clés ;
+- `<link rel="canonical">` ;
+- Open Graph + Twitter Card (jolie carte sur WhatsApp / Facebook) ;
+- données structurées JSON-LD (`Product` + `Organization`) → résultats enrichis Google ;
+- `robots.txt` + `sitemap.xml`.
 
-Le fichier **`CNAME`** à la racine contient le nom de domaine pour GitHub Pages.
+**Étapes restantes (à faire une fois, hors code) :**
+1. Inscrire le site sur **Google Search Console** (https://search.google.com/search-console), prouver la propriété, puis « Demander l'indexation » de l'URL.
+2. Y soumettre `https://mindperfume.ma/sitemap.xml`.
+3. Patienter quelques jours : Google indexera le site et il remontera sur les recherches « MindPerfume », « parfum Mystique Maroc », etc.
 
-### Apex (`mindperfume.ma` sans `www`)
+> Note : le code ne peut pas *forcer* la 1ʳᵉ position (ça dépend de la concurrence, des liens, de l'ancienneté du domaine). Mais tout le nécessaire technique est désormais en place — c'est ce qui manquait pour que le site soit trouvable sans taper « .ma ».
 
-Chez votre **registrar**, créez des enregistrements **A** pour `@` pointant vers :
+## Dashboard privé
 
-- `185.199.108.153`
-- `185.199.109.153`
-- `185.199.110.153`
-- `185.199.111.153`
-
-(Documentation GitHub : [Managing a custom domain](https://docs.github.com/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site))
-
-### Sous-domaine `www`
-
-Utilisez un **CNAME** : nom **`www`**, cible **`abdellahsaifeddine.github.io`** (remplacez si votre compte GitHub change).
-
-Ensuite, dans le dépôt : **Settings → Pages → Custom domain** : `mindperfume.ma` (et éventuellement cocher **Enforce HTTPS** une fois le certificat actif).
-
-### WhatsApp (à configurer)
-
-Éditez **`js/config.js`** : remplacez **`whatsappE164`** par votre numéro WhatsApp Business, **sans le `+`** (ex. Maroc : `2126xxxxxxxx`). Le catalogue et les prix sont dans **`js/products-data.js`**.
-
----
-
-Projet statique : `index.html`, `checkout.html`, `css/`, `js/`.
+Triple-clic sur le logo « MindPerfume.ma » dans le pied de page. Connexion Google Sheets via Apps Script (guide intégré dans le dashboard).
