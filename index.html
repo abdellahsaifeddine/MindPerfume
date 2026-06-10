@@ -15,9 +15,22 @@
 <meta name="theme-color" content="#1a1610"/>
 
 <!-- ════════ SÉCURITÉ (en-têtes via meta) ════════ -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self' https://wa.me; upgrade-insecure-requests"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' https://www.googletagmanager.com 'unsafe-inline'; connect-src 'self' https://script.google.com https://script.googleusercontent.com https://www.google-analytics.com https://analytics.google.com https://region1.google-analytics.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self' https://wa.me; upgrade-insecure-requests"/>
 <meta http-equiv="X-Content-Type-Options" content="nosniff"/>
 <meta name="referrer" content="strict-origin-when-cross-origin"/>
+
+<!-- ════════ GOOGLE ANALYTICS 4 ════════ -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JY36P5NHB2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-JY36P5NHB2', {
+    page_title: document.title,
+    page_location: window.location.href,
+    anonymize_ip: true
+  });
+</script>
 
 <!-- ════════ OPEN GRAPH (Facebook / WhatsApp) ════════ -->
 <meta property="og:type" content="product"/>
