@@ -6,13 +6,25 @@ window.FLACON_SRC="assets/img/img-02.jpg";
 (function () {
   'use strict';
 
+  /* ── CONFIG ── */
+  var WHATSAPP_NUMBER = '212625149343'; // +212 625-149343
+
   /* ── SAFE STORAGE (never throws) ── */
   function lsGet(k) {
-    try { return lsGet(k); } catch (e) { return null; }
+    try { return window.localStorage.getItem(k); } catch (e) { return null; }
   }
   function lsSet(k, v) {
-    try { lsSet(k, v); } catch (e) {} 
+    try { window.localStorage.setItem(k, v); } catch (e) {}
   }
+
+  /* ── SECURITY: escape any dynamic text before injecting in HTML ── */
+  function esc(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+
+  var REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* ── CURSOR (desktop only) ── */
   function initCursor() {
@@ -56,6 +68,51 @@ window.FLACON_SRC="assets/img/img-02.jpg";
     }, 350);
   }
 
+  /* ── SCROLL PROGRESS BAR ── */
+  function initProgress() {
+    var bar = document.getElementById('sProg');
+    if (!bar) return;
+    window.addEventListener('scroll', function () {
+      var h = document.documentElement.scrollHeight - window.innerHeight;
+      bar.style.width = (h > 0 ? (window.scrollY / h) * 100 : 0) + '%';
+    }, { passive: true });
+  }
+
+  /* ── ESSENCE PARTICLES (hero, subtle gold specks) ── */
+  function initParticles() {
+    if (REDUCED) return;
+    var host = document.getElementById('hR');
+    if (!host) return;
+    var wrap = document.createElement('div');
+    wrap.className = 'essence';
+    for (var i = 0; i < 14; i++) {
+      var p = document.createElement('span');
+      var size = 2 + Math.random() * 3.5;
+      p.style.left = (8 + Math.random() * 84) + '%';
+      p.style.width = size + 'px';
+      p.style.height = size + 'px';
+      p.style.animationDuration = (9 + Math.random() * 10) + 's';
+      p.style.animationDelay = (-Math.random() * 14) + 's';
+      p.style.opacity = (0.25 + Math.random() * 0.4).toFixed(2);
+      wrap.appendChild(p);
+    }
+    host.appendChild(wrap);
+  }
+
+  /* ── MAGNETIC BUTTONS ── */
+  function initMagnetic() {
+    if (REDUCED || !window.matchMedia('(hover:hover)').matches) return;
+    document.querySelectorAll('.btn-buy,.pc-add,.c-go').forEach(function (btn) {
+      btn.addEventListener('mousemove', function (e) {
+        var r = btn.getBoundingClientRect();
+        var x = (e.clientX - r.left - r.width / 2) / r.width;
+        var y = (e.clientY - r.top - r.height / 2) / r.height;
+        btn.style.transform = 'translate(' + (x * 6) + 'px,' + (y * 5 - 2) + 'px)';
+      });
+      btn.addEventListener('mouseleave', function () { btn.style.transform = ''; });
+    });
+  }
+
   /* ── SCROLL REVEALS ── */
   function initReveals() {
     var obs = new IntersectionObserver(function (entries) {
@@ -80,6 +137,7 @@ window.FLACON_SRC="assets/img/img-02.jpg";
 
   /* ── PARALLAX ── */
   function initParallax() {
+    if (REDUCED) return;
     var hR = document.getElementById('hR');
     var iBg = document.getElementById('immBg');
     var iW = document.getElementById('imm');
@@ -98,6 +156,7 @@ window.FLACON_SRC="assets/img/img-02.jpg";
 
   /* ── TILT ── */
   function initTilt() {
+    if (REDUCED) return;
     document.querySelectorAll('.jc').forEach(function (c) {
       c.addEventListener('mousemove', function (e) {
         var r = c.getBoundingClientRect();
@@ -189,6 +248,12 @@ window.FLACON_SRC="assets/img/img-02.jpg";
     var el = document.getElementById('cN');
     el.textContent = n;
     el.classList.toggle('on', n > 0);
+    if (n > 0 && !REDUCED) {
+      var btn = document.getElementById('cartBtn');
+      btn.classList.remove('pop');
+      void btn.offsetWidth;
+      btn.classList.add('pop');
+    }
   }
   function renderCart() {
     var body = document.getElementById('cBody');
@@ -201,9 +266,9 @@ window.FLACON_SRC="assets/img/img-02.jpg";
     var html = '';
     cart.forEach(function (item, i) {
       html += '<div class="c-line">';
-      html += '<img class="c-line-img" src="' + window.FLACON_SRC + '" alt="' + item.name + '"/>';
+      html += '<img class="c-line-img" src="' + window.FLACON_SRC + '" alt="' + esc(item.name) + '"/>';
       html += '<div class="c-line-info">';
-      html += '<strong>' + item.name + '</strong>';
+      html += '<strong>' + esc(item.name) + '</strong>';
       html += '<div class="c-pr">' + item.price + ' MAD \u00d7 ' + item.qty + ' = ' + (item.price * item.qty) + ' MAD</div>';
       html += '<div class="c-qty">';
       html += '<button onclick="MP.chQty(' + i + ',-1)">\u2212</button>';
@@ -260,25 +325,26 @@ window.FLACON_SRC="assets/img/img-02.jpg";
       });
     }
     var msg = '';
-    msg += 'Bonjour MindPerfume,\n\n';
-    msg += 'Vous etes aux dernieres etapes pour valider votre commande, et vous etes sur la bonne voie !\n\n';
-    msg += 'Voici le recapitulatif de ma selection :\n';
-    msg += '--------------------------------\n';
+    msg += 'Salut \uD83D\uDE4C\n\n';
+    msg += 'Ton parfum est presque \u00E0 toi.\n\n';
+    msg += 'R\u00E9capitulatif de ta s\u00E9lection :\n';
     cart.forEach(function (i) {
-      msg += '- ' + i.name + '  x' + i.qty + '  =  ' + (i.price * i.qty) + ' MAD\n';
+      msg += '\uD83C\uDF3F ' + i.name + ' \u00D7' + i.qty + ' = ' + (i.price * i.qty) + ' MAD\n';
     });
-    msg += '--------------------------------\n';
-    msg += 'Total a regler : ' + total + ' MAD\n';
-    msg += '(Livraison dans tout le Maroc)\n\n';
-    msg += 'Il ne me reste plus qu a confirmer ma commande en vous communiquant :\n';
-    msg += '- Mon nom complet :\n';
-    msg += '- Mon adresse de livraison :\n';
-    msg += '- Mon numero de telephone :\n\n';
-    msg += 'Merci, j ai hate de recevoir mon parfum.';
+    msg += '\nTotal \u00E0 r\u00E9gler : ' + total + ' MAD\n';
+    msg += '\uD83D\uDE9A Livraison partout au Maroc \uD83C\uDDF2\uD83C\uDDE6\n\n';
+    msg += 'Pour confirmer ta commande, envoie-nous simplement :\n';
+    msg += '\u2022 Nom complet :\n';
+    msg += '\u2022 Adresse de livraison :\n';
+    msg += '\u2022 Num\u00E9ro de t\u00E9l\u00E9phone :\n\n';
+    msg += 'D\u00E8s r\u00E9ception de ces informations, on valide ta commande et on pr\u00E9pare ton colis avec soin \uD83D\uDCE6.\n\n';
+    msg += '\uD83D\uDD25 On a h\u00E2te de te faire d\u00E9couvrir Mystique \u2014 Mon V\u00E9tiver.\n\n';
+    msg += '\u00C0 tr\u00E8s vite,\n';
+    msg += 'MindPerfume \uD83D\uDDA4';
     if (typeof MP_logOrder === 'function') {
       MP_logOrder(cart.map(function (i) { return i.name + ' x' + i.qty; }).join(', '), total);
     }
-    window.open('https://wa.me/212691658691?text=' + encodeURIComponent(msg), '_blank', 'noopener');
+    window.open('https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(msg), '_blank', 'noopener');
   }
   function initCart() {
     document.getElementById('cartBtn').addEventListener('click', openCart);
@@ -350,7 +416,11 @@ window.FLACON_SRC="assets/img/img-02.jpg";
   }
   function getStatsConfig() {
     var saved = lsGet('mp_sheet_cfg');
-    return saved ? JSON.parse(saved) : { sheetId: '', sheetName: 'Stats', scriptUrl: '' };
+    try {
+      return saved ? JSON.parse(saved) : { sheetId: '', sheetName: 'Stats', scriptUrl: '' };
+    } catch (e) {
+      return { sheetId: '', sheetName: 'Stats', scriptUrl: '' };
+    }
   }
   function loadStatsConfig() {
     var cfg = getStatsConfig();
@@ -396,7 +466,7 @@ window.FLACON_SRC="assets/img/img-02.jpg";
       html += '<tr style="background:' + bg + '">';
       row.forEach(function (cell) {
         var tag = i === 0 ? 'th' : 'td';
-        html += '<' + tag + ' style="padding:.6rem .8rem;border:1px solid var(--line);font-family:var(--mono);font-size:.55rem;font-weight:' + fw + ';text-align:left;white-space:nowrap;">' + cell + '</' + tag + '>';
+        html += '<' + tag + ' style="padding:.6rem .8rem;border:1px solid var(--line);font-family:var(--mono);font-size:.55rem;font-weight:' + fw + ';text-align:left;white-space:nowrap;">' + esc(cell) + '</' + tag + '>';
       });
       html += '</tr>';
     });
@@ -445,19 +515,21 @@ window.FLACON_SRC="assets/img/img-02.jpg";
         body: JSON.stringify({ id: cfg.sheetId, sheet: cfg.sheetName, row: row })
       }).catch(function () {});
     }
-    var log = JSON.parse(lsGet('mp_order_log') || '[]');
+    var log;
+    try { log = JSON.parse(lsGet('mp_order_log') || '[]'); } catch (e) { log = []; }
     log.unshift({ date: row[0], items: items, total: total + ' MAD' });
     lsSet('mp_order_log', JSON.stringify(log.slice(0, 50)));
   }
   function loadOrderLog() {
-    var log = JSON.parse(lsGet('mp_order_log') || '[]');
+    var log;
+    try { log = JSON.parse(lsGet('mp_order_log') || '[]'); } catch (e) { log = []; }
     var el = document.getElementById('orderLog');
     if (!el) return;
     if (!log.length) { el.textContent = 'Aucune commande'; return; }
     var html = '<table style="width:100%;border-collapse:collapse;">';
     html += '<tr style="background:var(--paper2)"><th style="padding:.5rem;border:1px solid var(--line);font-family:var(--mono);font-size:.5rem;text-align:left;">Date</th><th style="padding:.5rem;border:1px solid var(--line);font-family:var(--mono);font-size:.5rem;text-align:left;">Articles</th><th style="padding:.5rem;border:1px solid var(--line);font-family:var(--mono);font-size:.5rem;text-align:left;">Total</th></tr>';
     log.forEach(function (o) {
-      html += '<tr><td style="padding:.5rem;border:1px solid var(--line);font-family:var(--mono);font-size:.55rem;">' + o.date + '</td><td style="padding:.5rem;border:1px solid var(--line);font-family:var(--mono);font-size:.55rem;">' + o.items + '</td><td style="padding:.5rem;border:1px solid var(--line);font-family:var(--mono);font-size:.55rem;color:var(--gold);">' + o.total + '</td></tr>';
+      html += '<tr><td style="padding:.5rem;border:1px solid var(--line);font-family:var(--mono);font-size:.55rem;">' + esc(o.date) + '</td><td style="padding:.5rem;border:1px solid var(--line);font-family:var(--mono);font-size:.55rem;">' + esc(o.items) + '</td><td style="padding:.5rem;border:1px solid var(--line);font-family:var(--mono);font-size:.55rem;color:var(--gold);">' + esc(o.total) + '</td></tr>';
     });
     html += '</table>';
     el.innerHTML = html;
@@ -488,6 +560,9 @@ window.FLACON_SRC="assets/img/img-02.jpg";
   function init() {
     initCursor();
     initEntrance();
+    initProgress();
+    initParticles();
+    initMagnetic();
     initReveals();
     initHeader();
     initParallax();

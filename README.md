@@ -2,26 +2,36 @@
 
 Site vitrine mono-produit — **Mystique · Mon Vétiver** (Eau de Parfum 50ml, 300 MAD).
 
+## Nouveautés de cette version (juin 2026)
+
+1. **Message WhatsApp pro** : le panier ouvre WhatsApp avec le nouveau template
+   (récap 🌿, total, livraison 🚚🇲🇦, infos à compléter, signature MindPerfume 🖤).
+2. **Nouveau numéro de commande** : `+212 625-149343` (panier + lien du footer).
+3. **Favicon / icône du site** : le logo MP s'affiche dans l'onglet du navigateur,
+   les favoris et les résultats Google (favicon.ico + PNG 16/32/192/512 + Apple touch).
+4. **Sécurité renforcée** : échappement HTML anti-XSS, bug localStorage corrigé,
+   `object-src 'none'` ajouté à la CSP. Détails dans `SECURITE.md`.
+5. **Site plus vivant** : fil d'or de progression en haut de page, reflet doré animé
+   sur « Mon Vétiver », particules d'essence dans le hero, Ken Burns lent sur la photo,
+   notes olfactives en cascade avec pastilles qui s'allument, boutons magnétiques,
+   pop du panier, soulignement animé du menu, halo doré sur les cartes journal —
+   le tout désactivé automatiquement si le visiteur préfère un mouvement réduit.
+
 ## Structure des fichiers
 
 ```
 .
-├── index.html        → page HTML (structure + SEO)
-├── styles.css        → tout le style (design + dashboard)
+├── index.html        → page HTML (structure + SEO + favicon)
+├── styles.css        → tout le style (design + dashboard + animations)
 ├── app.js            → toute la logique (panier, lightbox, dashboard…)
-├── assets/img/       → 5 images (extraites, dédupliquées)
-│   ├── img-01.png    → photo hero / og:image
-│   ├── img-02.jpg    → flacon (utilisé aussi par le panier)
-│   ├── img-03.jpg    → pyramide olfactive
-│   ├── img-04.png
-│   └── img-05.png
-├── robots.txt        → autorise l'indexation + pointe le sitemap
-├── sitemap.xml       → plan du site pour Google
-└── CNAME             → domaine personnalisé (MindPerfume.ma)
+├── favicon.ico       → icône du site (multi-tailles)
+├── assets/img/       → images du site + icônes
+│   ├── img-01..05    → photos produit
+│   ├── favicon-16/32.png, icon-192/512.png, apple-touch-icon.png
+│   └── logo-full.png → logo complet (données structurées Google)
+├── robots.txt / sitemap.xml / CNAME / 404.html / LICENSE.txt
+└── SECURITE.md       → état de la sécurité + 5 min de réglages à faire
 ```
-
-> Avant : un seul `index.html` de **3,8 Mo** (images en base64, CSS + JS inline).
-> Après : `index.html` de **~32 Ko** + fichiers séparés. Images passées de 14 (dupliquées) à 5 uniques.
 
 ## Mise en ligne (GitHub Pages)
 
@@ -29,22 +39,14 @@ Site vitrine mono-produit — **Mystique · Mon Vétiver** (Eau de Parfum 50ml, 
 2. Settings → Pages → Source : `main` / `/ (root)`.
 3. Le fichier `CNAME` garde le domaine `MindPerfume.ma`.
 
-## SEO — pour apparaître dans Google (et sans taper « .ma »)
+## À propos de l'icône dans Google
 
-Ajouté dans cette version :
-- balise `<title>` et `<meta description>` optimisées + mots-clés ;
-- `<link rel="canonical">` ;
-- Open Graph + Twitter Card (jolie carte sur WhatsApp / Facebook) ;
-- données structurées JSON-LD (`Product` + `Organization`) → résultats enrichis Google ;
-- `robots.txt` + `sitemap.xml`.
-
-**Étapes restantes (à faire une fois, hors code) :**
-1. Inscrire le site sur **Google Search Console** (https://search.google.com/search-console), prouver la propriété, puis « Demander l'indexation » de l'URL.
-2. Y soumettre `https://mindperfume.ma/sitemap.xml`.
-3. Patienter quelques jours : Google indexera le site et il remontera sur les recherches « MindPerfume », « parfum Mystique Maroc », etc.
-
-> Note : le code ne peut pas *forcer* la 1ʳᵉ position (ça dépend de la concurrence, des liens, de l'ancienneté du domaine). Mais tout le nécessaire technique est désormais en place — c'est ce qui manquait pour que le site soit trouvable sans taper « .ma ».
+Google récupère le favicon automatiquement lors du prochain passage de son robot.
+Après la mise en ligne : Google Search Console → « Inspection d'URL » →
+« Demander l'indexation ». L'icône apparaît à côté du nom du site sous quelques jours
+(c'est Google qui décide du délai, pas le code).
 
 ## Dashboard privé
 
-Triple-clic sur le logo « MindPerfume.ma » dans le pied de page. Connexion Google Sheets via Apps Script (guide intégré dans le dashboard).
+Triple-clic sur le logo « MindPerfume.ma » dans le pied de page. Connexion Google
+Sheets via Apps Script (guide intégré dans le dashboard).

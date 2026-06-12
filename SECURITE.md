@@ -24,27 +24,37 @@ le code). Tout le reste est secondaire.
 La double authentification rend quasi impossible le piratage de ton compte, même si on
 trouve ton mot de passe. C'est LA protection numéro un. Bravo.
 
-### 2. En-têtes de sécurité ajoutés au site (cette version)
-Dans `index.html` :
+### 2. En-têtes de sécurité dans `index.html`
 - **Content-Security-Policy (CSP)** : le navigateur n'exécute QUE ton propre `app.js` et
-  ne charge QUE les ressources autorisées (tes images, Google Fonts, ton Google Sheet).
-  Si un pirate arrivait à injecter du code malveillant, le navigateur **refuserait de
-  l'exécuter**. C'est une protection anti-XSS très solide.
-- **X-Content-Type-Options: nosniff** : empêche le navigateur de « deviner » un type de
-  fichier (technique utilisée dans certaines attaques).
+  ne charge QUE les ressources autorisées (tes images, Google Fonts, ton Google Sheet,
+  Google Analytics). Si un pirate arrivait à injecter du code malveillant, le navigateur
+  **refuserait de l'exécuter**. Protection anti-XSS très solide.
+- **`object-src 'none'`** *(nouveau dans cette version)* : interdit totalement les plugins
+  / objets embarqués, un vecteur d'attaque classique.
+- **X-Content-Type-Options: nosniff** : empêche le navigateur de « deviner » un type de fichier.
 - **referrer strict** : limite les infos envoyées aux autres sites.
 - **upgrade-insecure-requests** : force tout en HTTPS.
 
-### 3. HTTPS (cadenas) — gratuit et automatique
+### 3. Anti-XSS dans le code lui-même *(nouveau dans cette version)*
+Tout texte dynamique injecté dans la page (panier, tableau Google Sheets du dashboard,
+journal des commandes) passe maintenant par une fonction d'**échappement HTML** (`esc()`).
+Concrètement : même si quelqu'un écrivait du code malveillant **dans ton Google Sheet**,
+il s'afficherait comme du texte inoffensif au lieu de s'exécuter dans ton navigateur.
+C'était le seul vrai trou potentiel du dashboard — il est bouché.
+
+### 4. Bug critique corrigé *(nouveau dans cette version)*
+Les fonctions de stockage local (`lsGet`/`lsSet`) s'appelaient elles-mêmes en boucle
+infinie — la sauvegarde de la config du dashboard ne fonctionnait pas. Corrigé : elles
+utilisent maintenant correctement `localStorage`, avec gestion d'erreur (JSON corrompu
+ou stockage bloqué ne fait plus planter la page).
+
+### 5. HTTPS (cadenas) — gratuit et automatique
 GitHub Pages fournit le HTTPS gratuitement. Dans ton repo :
 `Settings → Pages → coche « Enforce HTTPS »`. (À vérifier une fois.)
 
-### 4. Page 404 propre
-`404.html` redirige vers l'accueil au lieu d'afficher une page d'erreur moche.
-
-### 5. Mention de copyright
-`LICENSE.txt` + balise `<meta copyright>` : ça ne bloque pas techniquement la copie, mais
-ça pose une base légale claire (« tous droits réservés ») si quelqu'un te copie.
+### 6. Page 404 propre + copyright
+`404.html` redirige vers l'accueil ; `LICENSE.txt` + balise `<meta copyright>` posent
+une base légale claire (« tous droits réservés ») si quelqu'un te copie.
 
 ---
 
@@ -52,48 +62,44 @@ GitHub Pages fournit le HTTPS gratuitement. Dans ton repo :
 
 1. **Vérifier « Enforce HTTPS »** dans Settings → Pages de ton repo.
 2. **Mettre ton repo en privé** si tu veux que personne ne lise ton code source.
-   `Settings → General → Danger Zone → Change visibility → Private`.
-   ⚠️ Note : GitHub Pages gratuit nécessite parfois un repo public. Si tu veux à la fois
-   Pages gratuit ET code privé, il faut un compte Pro (4 $/mois) — sinon laisse public,
-   ce n'est pas grave (voir plus bas « copie du site »).
-3. **Activer les alertes de sécurité** : `Settings → Code security → active Dependabot
-   alerts`. (Tu n'as pas de dépendances, mais c'est une bonne habitude.)
-4. **Sauvegarde** : garde une copie du dossier complet sur ton ordinateur ET sur un disque/
-   cloud. Si jamais ton compte avait un souci, tu peux tout remettre en ligne en 10 min.
-   👉 La meilleure protection contre « la destruction », c'est une bonne sauvegarde.
+   ⚠️ GitHub Pages gratuit nécessite parfois un repo public — sinon compte Pro (4 $/mois).
+3. **Activer les alertes de sécurité** : `Settings → Code security → Dependabot alerts`.
+4. **Sauvegarde** : garde une copie du dossier complet sur ton ordinateur ET sur un
+   disque/cloud. La meilleure protection contre « la destruction », c'est une bonne sauvegarde.
+5. **Protège aussi ton compte de domaine** (registrar de MindPerfume.ma) avec la 2FA —
+   c'est aussi important que GitHub.
+6. **Apps Script** : ton script Google Sheets est déployé en « accès : tout le monde ».
+   Ne partage jamais son URL publiquement, et ne mets **aucune donnée sensible** dans ce
+   Sheet (pas de noms complets de clients + téléphones par exemple). Si un jour tu veux
+   verrouiller, ajoute un petit jeton secret vérifié dans `doGet`/`doPost`.
 
 ---
 
 ## 🛡️ « Qu'on copie / vole mon site » — la réalité
 
-Soyons honnêtes : **tout site public peut être copié.** N'importe qui peut faire
-« Enregistrer la page » dans son navigateur. C'est vrai pour Apple, Nike, tout le monde.
-On ne peut PAS l'empêcher techniquement à 100% (le navigateur a besoin du code pour
-afficher la page).
-
-Ce qu'on peut faire, c'est **rendre la copie moins intéressante et se protéger
-légalement** :
+Tout site public peut être copié (« Enregistrer la page » suffit). C'est vrai pour Apple,
+Nike, tout le monde. Ce qu'on peut faire, c'est rendre la copie moins intéressante et se
+protéger légalement :
 
 | Risque | Protection réelle |
 |---|---|
-| Copier le **design/code** | Repo privé (cache la version propre) + `LICENSE.txt` (droit d'auteur) |
+| Copier le **design/code** | Repo privé + `LICENSE.txt` (droit d'auteur) |
 | Voler tes **images** | Watermark discret possible ; sinon le droit d'auteur s'applique |
-| Cloner ton **nom/marque** | Le vrai bouclier = ta **marque déposée** + ton **domaine MindPerfume.ma** que toi seul possèdes |
+| Cloner ton **nom/marque** | Ta **marque déposée** + ton **domaine MindPerfume.ma** que toi seul possèdes |
 | Refaire le **même business** | Impossible à empêcher — c'est ta réputation/qualité qui fait la différence |
 
-**Le plus important :** ton avantage n'est pas le code (n'importe qui peut coder un site
-de parfum). C'est **ton nom de domaine `MindPerfume.ma`** (que toi seul contrôles via ton
-registrar) et **ta marque**. Protège l'accès à ces deux comptes (domaine + GitHub) avec
-2FA, et tu as protégé l'essentiel.
+**Le plus important :** ton avantage n'est pas le code, c'est ton **domaine** et ta
+**marque**. Protège l'accès à ces deux comptes (domaine + GitHub) avec la 2FA, et tu as
+protégé l'essentiel.
 
 ---
 
 ## 🚫 Ce qui NE sert à rien (n'y perds pas ton temps)
 
-- **Désactiver le clic droit / “protéger” le code en JS** : inutile, tout le monde
-  contourne ça en 2 secondes (Ctrl+U, mode dev…). Ça gêne juste tes vrais visiteurs.
+- **Désactiver le clic droit / « protéger » le code en JS** : contourné en 2 secondes,
+  ça gêne juste tes vrais visiteurs.
 - **Obfusquer le JavaScript** : ralentit le site, n'arrête personne de motivé.
-- **Payer un “antivirus de site web”** : inutile pour un site statique sans serveur.
+- **Payer un « antivirus de site web »** : inutile pour un site statique sans serveur.
 
 ---
 
