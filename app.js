@@ -324,19 +324,21 @@ window.FLACON_SRC="assets/img/img-02.jpg";
         })
       });
     }
+    var prenom = '';
+    try { prenom = (window.prompt('Ton pr\u00E9nom pour la commande ? \uD83D\uDE0A', '') || '').trim(); } catch (e) {}
     var msg = '';
-    msg += 'Salut \uD83D\uDE4C\n\n';
+    msg += 'Salut' + (prenom ? ' ' + prenom : '') + ' \uD83D\uDE4C\n\n';
     msg += 'Ton parfum est presque \u00E0 toi.\n\n';
-    msg += 'R\u00E9capitulatif de ta s\u00E9lection :\n';
+    msg += 'R\u00E9capitulatif de ta s\u00E9lection:\n\n';
     cart.forEach(function (i) {
       msg += '\uD83C\uDF3F ' + i.name + ' \u00D7' + i.qty + ' = ' + (i.price * i.qty) + ' MAD\n';
     });
-    msg += '\nTotal \u00E0 r\u00E9gler : ' + total + ' MAD\n';
+    msg += '\nTotal \u00E0 r\u00E9gler : ' + total + ' MAD\n\n';
     msg += '\uD83D\uDE9A Livraison partout au Maroc \uD83C\uDDF2\uD83C\uDDE6\n\n';
-    msg += 'Pour confirmer ta commande, envoie-nous simplement :\n';
-    msg += '\u2022 Nom complet :\n';
-    msg += '\u2022 Adresse de livraison :\n';
-    msg += '\u2022 Num\u00E9ro de t\u00E9l\u00E9phone :\n\n';
+    msg += 'Pour confirmer ta commande, envoie-nous simplement:\n\n';
+    msg += '\u2022 nom complet : \u2026\u2026\u2026\n';
+    msg += '\u2022 Adresse de livraison : \u2026\u2026\u2026.\n';
+    msg += '\u2022 Num\u00E9ro de t\u00E9l\u00E9phone : \u2026\u2026\u2026..\n\n';
     msg += 'D\u00E8s r\u00E9ception de ces informations, on valide ta commande et on pr\u00E9pare ton colis avec soin \uD83D\uDCE6.\n\n';
     msg += '\uD83D\uDD25 On a h\u00E2te de te faire d\u00E9couvrir Mystique \u2014 Mon V\u00E9tiver.\n\n';
     msg += '\u00C0 tr\u00E8s vite,\n';

@@ -364,17 +364,24 @@ html.rdy .hero-R{opacity:1;transform:none}
   background:linear-gradient(90deg,var(--gold),var(--gold2));
   box-shadow:0 0 12px rgba(196,160,90,.5)}
 
-/* Reflet doré animé sur « Mon Vétiver » */
-html.rdy .hero-h1 .ln:nth-child(2) span{
-  background:linear-gradient(110deg,var(--gold) 35%,var(--gold2) 48%,#e3c987 52%,var(--gold) 65%);
-  background-size:220% 100%;-webkit-background-clip:text;background-clip:text;
-  -webkit-text-fill-color:transparent;color:transparent;
-  animation:sheen 6s linear 1.6s infinite}
+/* Reflet doré animé sur « Mon Vétiver » (desktop uniquement, et seulement
+   si le navigateur sait découper un dégradé dans les lettres) */
+@media(min-width:769px){
+  @supports ((-webkit-background-clip:text) and (-webkit-text-fill-color:transparent)){
+    html.rdy .hero-h1 .ln:nth-child(2) span{
+      background-image:linear-gradient(110deg,var(--gold) 35%,var(--gold2) 48%,#e3c987 52%,var(--gold) 65%);
+      background-size:220% 100%;-webkit-background-clip:text;background-clip:text;
+      -webkit-text-fill-color:transparent;
+      animation:sheen 6s linear 1.6s infinite}
+  }
+}
 @keyframes sheen{from{background-position:120% 0}to{background-position:-120% 0}}
+/* Mobile : couleur or pleine, lisible à 100% (pas de dégradé-texte) */
 @media(max-width:768px){
   html.rdy .hero-h1 .ln:nth-child(2) span{
-    background:linear-gradient(110deg,var(--gold2) 35%,#e3c987 48%,#f3e3bb 52%,var(--gold2) 65%);
-    background-size:220% 100%}
+    background:none;-webkit-text-fill-color:var(--gold2);color:var(--gold2);
+    animation:vetGlow 4s ease-in-out 1.6s infinite}
+  @keyframes vetGlow{0%,100%{text-shadow:0 0 0 rgba(196,160,90,0)}50%{text-shadow:0 0 22px rgba(227,201,135,.55)}}
 }
 
 /* Ken Burns très lent sur la photo hero */
