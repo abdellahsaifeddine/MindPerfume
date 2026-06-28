@@ -15,6 +15,10 @@ window.FLACON_SRC="assets/img/img-02.jpg";
     scriptUrl: 'https://script.google.com/macros/s/AKfycbxj0aX-K8bQykjB_ImSygKhCqDApzhSKOW9Fl0KYLq_aKSfcGsBYO2NGCHfq6Li_rBzKg/exec'
   };
 
+  /* ── CODE SECRET DU DASHBOARD ──
+     Change 'MIND2026' par le code de ton choix. */
+  var MP_SECRET = 'MIND2026';
+
   /* ── SAFE STORAGE (never throws) ── */
   function lsGet(k) {
     try { return localStorage.getItem(k); } catch (e) { return null; }
@@ -327,9 +331,24 @@ window.FLACON_SRC="assets/img/img-02.jpg";
         clearTimeout(timer);
         clicks = 0;
         if (hint) hint.style.opacity = '0';
-        openStats();
+        askSecretThenOpen();
       }
     });
+  }
+  function askSecretThenOpen() {
+    // Déjà déverrouillé sur cet appareil ?
+    if (lsGet('mp_dash_unlocked') === '1') {
+      openStats();
+      return;
+    }
+    var code = prompt('Code d\u2019accès au dashboard :');
+    if (code === null) return; // annulé
+    if (code === MP_SECRET) {
+      lsSet('mp_dash_unlocked', '1'); // mémorise sur cet appareil
+      openStats();
+    } else {
+      alert('Code incorrect.');
+    }
   }
   function openStats() {
     var page = document.getElementById('statsPage');
