@@ -15,7 +15,8 @@ window.FLACON_SRC="assets/img/img-02.jpg";
     scriptUrl: 'https://script.google.com/macros/s/AKfycbxj0aX-K8bQykjB_ImSygKhCqDApzhSKOW9Fl0KYLq_aKSfcGsBYO2NGCHfq6Li_rBzKg/exec'
   };
 
-  /* ── CODE SECRET DU DASHBOARD ── */
+  /* ── CODE SECRET DU DASHBOARD ──
+     Change le code entre guillemets par celui de ton choix. */
   var MP_SECRET = 'Mind123';
 
   /* ── SAFE STORAGE (never throws) ── */
