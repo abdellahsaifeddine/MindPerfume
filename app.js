@@ -16,8 +16,7 @@ window.FLACON_SRC="assets/img/img-02.jpg";
   };
 
   /* ── CODE SECRET DU DASHBOARD ──
-     Change 'MIND2026' par le code de ton choix. */
-  var MP_SECRET = 'MIND2026';
+  var MP_SECRET = 'Mind123';
 
   /* ── SAFE STORAGE (never throws) ── */
   function lsGet(k) {
