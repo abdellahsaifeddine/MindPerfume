@@ -6,25 +6,22 @@ window.FLACON_SRC="assets/img/img-02.jpg";
 (function () {
   'use strict';
 
-  /* ── CONFIG ── */
-  var WHATSAPP_NUMBER = '212625149343'; // +212 625-149343
+  /* ════════════════════════════════════════════
+     CONFIG EN DUR — modifie UNIQUEMENT ici si besoin
+     ════════════════════════════════════════════ */
+  var MP_CFG = {
+    sheetId:   '1Z2y8IqSGRnw1DtkgHfhwzCjsYAim-t1ZMBcj-cXjKAI',
+    sheetName: 'Stats',
+    scriptUrl: 'https://script.google.com/macros/s/AKfycbxj0aX-K8bQykjB_ImSygKhCqDApzhSKOW9Fl0KYLq_aKSfcGsBYO2NGCHfq6Li_rBzKg/exec'
+  };
 
   /* ── SAFE STORAGE (never throws) ── */
   function lsGet(k) {
-    try { return window.localStorage.getItem(k); } catch (e) { return null; }
+    try { return localStorage.getItem(k); } catch (e) { return null; }
   }
   function lsSet(k, v) {
-    try { window.localStorage.setItem(k, v); } catch (e) {}
+    try { localStorage.setItem(k, v); } catch (e) {}
   }
-
-  /* ── SECURITY: escape any dynamic text before injecting in HTML ── */
-  function esc(s) {
-    return String(s == null ? '' : s)
-      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-  }
-
-  var REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* ── CURSOR (desktop only) ── */
   function initCursor() {
@@ -68,51 +65,6 @@ window.FLACON_SRC="assets/img/img-02.jpg";
     }, 350);
   }
 
-  /* ── SCROLL PROGRESS BAR ── */
-  function initProgress() {
-    var bar = document.getElementById('sProg');
-    if (!bar) return;
-    window.addEventListener('scroll', function () {
-      var h = document.documentElement.scrollHeight - window.innerHeight;
-      bar.style.width = (h > 0 ? (window.scrollY / h) * 100 : 0) + '%';
-    }, { passive: true });
-  }
-
-  /* ── ESSENCE PARTICLES (hero, subtle gold specks) ── */
-  function initParticles() {
-    if (REDUCED) return;
-    var host = document.getElementById('hR');
-    if (!host) return;
-    var wrap = document.createElement('div');
-    wrap.className = 'essence';
-    for (var i = 0; i < 14; i++) {
-      var p = document.createElement('span');
-      var size = 2 + Math.random() * 3.5;
-      p.style.left = (8 + Math.random() * 84) + '%';
-      p.style.width = size + 'px';
-      p.style.height = size + 'px';
-      p.style.animationDuration = (9 + Math.random() * 10) + 's';
-      p.style.animationDelay = (-Math.random() * 14) + 's';
-      p.style.opacity = (0.25 + Math.random() * 0.4).toFixed(2);
-      wrap.appendChild(p);
-    }
-    host.appendChild(wrap);
-  }
-
-  /* ── MAGNETIC BUTTONS ── */
-  function initMagnetic() {
-    if (REDUCED || !window.matchMedia('(hover:hover)').matches) return;
-    document.querySelectorAll('.btn-buy,.pc-add,.c-go').forEach(function (btn) {
-      btn.addEventListener('mousemove', function (e) {
-        var r = btn.getBoundingClientRect();
-        var x = (e.clientX - r.left - r.width / 2) / r.width;
-        var y = (e.clientY - r.top - r.height / 2) / r.height;
-        btn.style.transform = 'translate(' + (x * 6) + 'px,' + (y * 5 - 2) + 'px)';
-      });
-      btn.addEventListener('mouseleave', function () { btn.style.transform = ''; });
-    });
-  }
-
   /* ── SCROLL REVEALS ── */
   function initReveals() {
     var obs = new IntersectionObserver(function (entries) {
@@ -137,7 +89,6 @@ window.FLACON_SRC="assets/img/img-02.jpg";
 
   /* ── PARALLAX ── */
   function initParallax() {
-    if (REDUCED) return;
     var hR = document.getElementById('hR');
     var iBg = document.getElementById('immBg');
     var iW = document.getElementById('imm');
@@ -156,7 +107,6 @@ window.FLACON_SRC="assets/img/img-02.jpg";
 
   /* ── TILT ── */
   function initTilt() {
-    if (REDUCED) return;
     document.querySelectorAll('.jc').forEach(function (c) {
       c.addEventListener('mousemove', function (e) {
         var r = c.getBoundingClientRect();
@@ -228,6 +178,11 @@ window.FLACON_SRC="assets/img/img-02.jpg";
 
   /* ── CART ── */
   var cart = [];
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
   function openCart() {
     document.getElementById('cDr').classList.add('on');
     document.getElementById('cOv').classList.add('on');
@@ -248,12 +203,6 @@ window.FLACON_SRC="assets/img/img-02.jpg";
     var el = document.getElementById('cN');
     el.textContent = n;
     el.classList.toggle('on', n > 0);
-    if (n > 0 && !REDUCED) {
-      var btn = document.getElementById('cartBtn');
-      btn.classList.remove('pop');
-      void btn.offsetWidth;
-      btn.classList.add('pop');
-    }
   }
   function renderCart() {
     var body = document.getElementById('cBody');
@@ -291,7 +240,6 @@ window.FLACON_SRC="assets/img/img-02.jpg";
     badge();
     renderCart();
     showToast();
-    // GA4 — ajout au panier
     if (typeof gtag === 'function') {
       gtag('event', 'add_to_cart', {
         currency: 'MAD',
@@ -314,7 +262,6 @@ window.FLACON_SRC="assets/img/img-02.jpg";
   function checkout() {
     if (!cart.length) { alert('Panier vide !'); return; }
     var total = cart.reduce(function (s, i) { return s + i.price * i.qty; }, 0);
-    // GA4 — début de commande
     if (typeof gtag === 'function') {
       gtag('event', 'begin_checkout', {
         currency: 'MAD',
@@ -324,29 +271,26 @@ window.FLACON_SRC="assets/img/img-02.jpg";
         })
       });
     }
-    var prenom = '';
-    try { prenom = (window.prompt('Ton pr\u00E9nom pour la commande ? \uD83D\uDE0A', '') || '').trim(); } catch (e) {}
     var msg = '';
-    msg += 'Salut' + (prenom ? ' ' + prenom : '') + ' \uD83D\uDE4C\n\n';
-    msg += 'Ton parfum est presque \u00E0 toi.\n\n';
-    msg += 'R\u00E9capitulatif de ta s\u00E9lection:\n\n';
+    msg += 'Bonjour MindPerfume,\n\n';
+    msg += 'Vous etes aux dernieres etapes pour valider votre commande, et vous etes sur la bonne voie !\n\n';
+    msg += 'Voici le recapitulatif de ma selection :\n';
+    msg += '--------------------------------\n';
     cart.forEach(function (i) {
-      msg += '\uD83C\uDF3F ' + i.name + ' \u00D7' + i.qty + ' = ' + (i.price * i.qty) + ' MAD\n';
+      msg += '- ' + i.name + '  x' + i.qty + '  =  ' + (i.price * i.qty) + ' MAD\n';
     });
-    msg += '\nTotal \u00E0 r\u00E9gler : ' + total + ' MAD\n\n';
-    msg += '\uD83D\uDE9A Livraison partout au Maroc \uD83C\uDDF2\uD83C\uDDE6\n\n';
-    msg += 'Pour confirmer ta commande, envoie-nous simplement:\n\n';
-    msg += '\u2022 nom complet : \u2026\u2026\u2026\n';
-    msg += '\u2022 Adresse de livraison : \u2026\u2026\u2026.\n';
-    msg += '\u2022 Num\u00E9ro de t\u00E9l\u00E9phone : \u2026\u2026\u2026..\n\n';
-    msg += 'D\u00E8s r\u00E9ception de ces informations, on valide ta commande et on pr\u00E9pare ton colis avec soin \uD83D\uDCE6.\n\n';
-    msg += '\uD83D\uDD25 On a h\u00E2te de te faire d\u00E9couvrir Mystique \u2014 Mon V\u00E9tiver.\n\n';
-    msg += '\u00C0 tr\u00E8s vite,\n';
-    msg += 'MindPerfume \uD83D\uDDA4';
+    msg += '--------------------------------\n';
+    msg += 'Total a regler : ' + total + ' MAD\n';
+    msg += '(Livraison dans tout le Maroc)\n\n';
+    msg += 'Il ne me reste plus qu a confirmer ma commande en vous communiquant :\n';
+    msg += '- Mon nom complet :\n';
+    msg += '- Mon adresse de livraison :\n';
+    msg += '- Mon numero de telephone :\n\n';
+    msg += 'Merci, j ai hate de recevoir mon parfum.';
     if (typeof MP_logOrder === 'function') {
       MP_logOrder(cart.map(function (i) { return i.name + ' x' + i.qty; }).join(', '), total);
     }
-    window.open('https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(msg), '_blank', 'noopener');
+    window.open('https://wa.me/212691658691?text=' + encodeURIComponent(msg), '_blank', 'noopener');
   }
   function initCart() {
     document.getElementById('cartBtn').addEventListener('click', openCart);
@@ -393,7 +337,6 @@ window.FLACON_SRC="assets/img/img-02.jpg";
     bindDashButtons();
     page.classList.add('is-open');
     page.setAttribute('aria-hidden', 'false');
-    loadStatsConfig();
     refreshStats();
     loadOrderLog();
   }
@@ -403,11 +346,7 @@ window.FLACON_SRC="assets/img/img-02.jpg";
     _dashBound = true;
     var map = [
       ['dashRefresh', refreshStats],
-      ['dashClose', closeStats],
-      ['dashSave', saveStatsConfig],
-      ['dashTest', testStatsConn],
-      ['dashGuide', toggleGuide],
-      ['dashGuideClose', toggleGuide]
+      ['dashClose', closeStats]
     ];
     for (var i = 0; i < map.length; i++) {
       (function (id, fn) {
@@ -417,114 +356,85 @@ window.FLACON_SRC="assets/img/img-02.jpg";
     }
   }
   function getStatsConfig() {
-    var saved = lsGet('mp_sheet_cfg');
-    try {
-      return saved ? JSON.parse(saved) : { sheetId: '', sheetName: 'Stats', scriptUrl: '' };
-    } catch (e) {
-      return { sheetId: '', sheetName: 'Stats', scriptUrl: '' };
-    }
+    return MP_CFG;
   }
-  function loadStatsConfig() {
-    var cfg = getStatsConfig();
-    var a = document.getElementById('sheetId');
-    var b = document.getElementById('sheetName');
-    var c = document.getElementById('scriptUrl');
-    if (a) a.value = cfg.sheetId || '';
-    if (b) b.value = cfg.sheetName || 'Stats';
-    if (c) c.value = cfg.scriptUrl || '';
-  }
+
+  /* ── Récupère les VRAIES stats GA4 via Apps Script ── */
   function refreshStats() {
     var cfg = getStatsConfig();
     var table = document.getElementById('sheetTable');
-    if (!cfg.scriptUrl || !cfg.sheetId) {
-      if (table) table.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--muted);font-family:var(--mono);font-size:.6rem;">Configurez votre Google Sheet ci-dessus</div>';
+    if (!cfg.scriptUrl || cfg.scriptUrl.indexOf('__COLLE') === 0) {
+      if (table) table.innerHTML = '<div class="dash-placeholder">URL Apps Script non configurée dans app.js</div>';
       return;
     }
-    if (table) table.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--muted);font-family:var(--mono);font-size:.6rem;">Chargement...</div>';
-    var url = cfg.scriptUrl + '?id=' + encodeURIComponent(cfg.sheetId) + '&sheet=' + encodeURIComponent(cfg.sheetName);
+    if (table) table.innerHTML = '<div class="dash-placeholder">Chargement des données GA4...</div>';
+
+    var url = cfg.scriptUrl + '?action=ga4';
     fetch(url)
       .then(function (r) { return r.json(); })
       .then(function (json) {
-        renderStatsTable(json.data || []);
-        updateKPIs(json.data || []);
+        if (!json.ok) {
+          if (table) table.innerHTML = '<div class="dash-placeholder" style="color:#c0392b">Erreur GA4 : ' + esc(json.error || 'inconnue') + '</div>';
+          return;
+        }
+        updateKPIs(json);
+        renderSourcesTable(json.sources || []);
         var lu = document.getElementById('lastUpdated');
-        if (lu) lu.textContent = 'Sync : ' + new Date().toLocaleTimeString('fr-FR');
+        if (lu) lu.textContent = 'Sync GA4 : ' + new Date().toLocaleTimeString('fr-FR');
       })
       .catch(function () {
-        if (table) table.innerHTML = '<div style="text-align:center;padding:2rem;color:#c0392b;font-family:var(--mono);font-size:.6rem;">Erreur de connexion. Verifiez l\u2019URL et les permissions.</div>';
+        if (table) table.innerHTML = '<div class="dash-placeholder" style="color:#c0392b">Erreur de connexion. Vérifiez le déploiement Apps Script.</div>';
       });
   }
-  function renderStatsTable(data) {
+  function updateKPIs(d) {
+    function set(id, val) { var e = document.getElementById(id); if (e) e.textContent = val; }
+    set('kpi-visits', d.users != null ? d.users : '—');
+    set('kpi-orders', d.sessions != null ? d.sessions : '—');
+    set('kpi-revenue', d.pageviews != null ? d.pageviews : '—');
+    if (d.users && d.sessions) {
+      set('kpi-rate', ((d.sessions / d.users) * 100).toFixed(0) + ' %');
+    }
+  }
+  function renderSourcesTable(sources) {
     var table = document.getElementById('sheetTable');
     if (!table) return;
-    if (!data.length) {
-      table.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--muted);font-family:var(--mono);font-size:.6rem;">Aucune donnee</div>';
+    if (!sources.length) {
+      table.innerHTML = '<div class="dash-placeholder">Aucune donnée GA4 sur la période (7 derniers jours)</div>';
       return;
     }
     var html = '<table style="width:100%;border-collapse:collapse;">';
-    data.forEach(function (row, i) {
-      var bg = i === 0 ? 'var(--paper2)' : (i % 2 === 0 ? 'var(--paper)' : 'var(--cream)');
-      var fw = i === 0 ? '600' : '400';
+    html += '<tr style="background:var(--paper2)">';
+    html += '<th style="padding:.6rem .8rem;border:1px solid var(--line);font-family:var(--mono);font-size:.55rem;text-align:left;">Source de trafic</th>';
+    html += '<th style="padding:.6rem .8rem;border:1px solid var(--line);font-family:var(--mono);font-size:.55rem;text-align:left;">Utilisateurs</th>';
+    html += '<th style="padding:.6rem .8rem;border:1px solid var(--line);font-family:var(--mono);font-size:.55rem;text-align:left;">Sessions</th>';
+    html += '</tr>';
+    sources.forEach(function (s, i) {
+      var bg = i % 2 === 0 ? 'var(--paper)' : 'var(--cream)';
       html += '<tr style="background:' + bg + '">';
-      row.forEach(function (cell) {
-        var tag = i === 0 ? 'th' : 'td';
-        html += '<' + tag + ' style="padding:.6rem .8rem;border:1px solid var(--line);font-family:var(--mono);font-size:.55rem;font-weight:' + fw + ';text-align:left;white-space:nowrap;">' + esc(cell) + '</' + tag + '>';
-      });
+      html += '<td style="padding:.6rem .8rem;border:1px solid var(--line);font-family:var(--mono);font-size:.55rem;">' + esc(s.channel) + '</td>';
+      html += '<td style="padding:.6rem .8rem;border:1px solid var(--line);font-family:var(--mono);font-size:.55rem;color:var(--gold);">' + s.users + '</td>';
+      html += '<td style="padding:.6rem .8rem;border:1px solid var(--line);font-family:var(--mono);font-size:.55rem;">' + s.sessions + '</td>';
       html += '</tr>';
     });
     html += '</table>';
     table.innerHTML = html;
   }
-  function updateKPIs(data) {
-    if (data.length < 2) return;
-    var last = data[data.length - 1];
-    function set(id, val) { var e = document.getElementById(id); if (e && val !== undefined) e.textContent = val; }
-    set('kpi-visits', last[1]);
-    set('kpi-orders', last[2]);
-    set('kpi-revenue', last[3] ? last[3] + ' MAD' : '—');
-    var v = parseFloat(last[1]), o = parseFloat(last[2]);
-    if (v && o) set('kpi-rate', ((o / v) * 100).toFixed(1) + ' %');
-  }
-  function saveStatsConfig() {
-    var cfg = {
-      sheetId: document.getElementById('sheetId').value,
-      sheetName: document.getElementById('sheetName').value,
-      scriptUrl: document.getElementById('scriptUrl').value
-    };
-    lsSet('mp_sheet_cfg', JSON.stringify(cfg));
-    var s = document.getElementById('connStatus');
-    if (s) { s.textContent = '\u2713 Sauvegarde'; setTimeout(function () { s.textContent = ''; }, 2000); }
-  }
-  function testStatsConn() {
-    var cfg = getStatsConfig();
-    var s = document.getElementById('connStatus');
-    if (!cfg.scriptUrl) { alert('Entrez l\u2019URL du script'); return; }
-    if (s) s.textContent = 'Test...';
-    fetch(cfg.scriptUrl + '?id=' + encodeURIComponent(cfg.sheetId) + '&sheet=' + encodeURIComponent(cfg.sheetName))
-      .then(function (r) { return r.json(); })
-      .then(function (json) {
-        if (s) s.textContent = '\u2713 OK \u2014 ' + (json.data ? json.data.length + ' lignes' : 'recu');
-      })
-      .catch(function () { if (s) s.textContent = '\u2717 Echec'; });
-  }
   function MP_logOrder(items, total) {
     var cfg = getStatsConfig();
     var row = [new Date().toLocaleString('fr-FR'), items, total + ' MAD', 'WhatsApp'];
-    if (cfg.scriptUrl && cfg.sheetId) {
+    if (cfg.scriptUrl && cfg.scriptUrl.indexOf('__COLLE') !== 0 && cfg.sheetId) {
       fetch(cfg.scriptUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: cfg.sheetId, sheet: cfg.sheetName, row: row })
       }).catch(function () {});
     }
-    var log;
-    try { log = JSON.parse(lsGet('mp_order_log') || '[]'); } catch (e) { log = []; }
+    var log = JSON.parse(lsGet('mp_order_log') || '[]');
     log.unshift({ date: row[0], items: items, total: total + ' MAD' });
     lsSet('mp_order_log', JSON.stringify(log.slice(0, 50)));
   }
   function loadOrderLog() {
-    var log;
-    try { log = JSON.parse(lsGet('mp_order_log') || '[]'); } catch (e) { log = []; }
+    var log = JSON.parse(lsGet('mp_order_log') || '[]');
     var el = document.getElementById('orderLog');
     if (!el) return;
     if (!log.length) { el.textContent = 'Aucune commande'; return; }
@@ -542,29 +452,19 @@ window.FLACON_SRC="assets/img/img-02.jpg";
     page.classList.remove('is-open');
     page.setAttribute('aria-hidden', 'true');
   }
-  function toggleGuide() {
-    var g = document.getElementById('guidePanel');
-    if (g) g.classList.toggle('is-open');
-  }
 
   /* ── PUBLIC API (for inline onclick) ── */
   window.MP = {
     chQty: chQty,
     rmItem: rmItem,
     refreshStats: refreshStats,
-    saveStatsConfig: saveStatsConfig,
-    testStatsConn: testStatsConn,
-    closeStats: closeStats,
-    toggleGuide: toggleGuide
+    closeStats: closeStats
   };
 
   /* ── INIT ── */
   function init() {
     initCursor();
     initEntrance();
-    initProgress();
-    initParticles();
-    initMagnetic();
     initReveals();
     initHeader();
     initParallax();
