@@ -360,14 +360,17 @@ window.FLACON_SRC="assets/img/img-02.jpg";
     refreshStats();
     loadOrderLog();
     clearInterval(_dashAutoRefresh);
-    _dashAutoRefresh = setInterval(refreshStats, 60000); // auto-actualisation toutes les 60s
+    _dashAutoRefresh = setInterval(function () {
+      refreshStats();
+      loadOrderLog();
+    }, 60000); // auto-actualisation toutes les 60s
   }
   var _dashBound = false;
   function bindDashButtons() {
     if (_dashBound) return;
     _dashBound = true;
     var map = [
-      ['dashRefresh', refreshStats],
+      ['dashRefresh', function () { refreshStats(); loadOrderLog(); }],
       ['dashClose', closeStats]
     ];
     for (var i = 0; i < map.length; i++) {
@@ -453,14 +456,51 @@ window.FLACON_SRC="assets/img/img-02.jpg";
     log.unshift({ date: row[0], items: items, total: total + ' MAD' });
     lsSet('mp_order_log', JSON.stringify(log.slice(0, 50)));
   }
+  /* ── Commandes : lit le Sheet central (toutes commandes, tous appareils) ──
+     Retombe sur le cache localStorage de cet appareil si le Sheet est
+     injoignable (hors ligne, script non configuré, etc.) ── */
   function loadOrderLog() {
-    var log = JSON.parse(lsGet('mp_order_log') || '[]');
     var el = document.getElementById('orderLog');
     if (!el) return;
-    if (!log.length) { el.textContent = 'Aucune commande sur cet appareil'; return; }
-    var html = '<table class="dash-table">';
+    var cfg = getStatsConfig();
+    el.innerHTML = '<div class="dash-placeholder">Chargement des commandes...</div>';
+    if (!cfg.scriptUrl || cfg.scriptUrl.indexOf('__COLLE') === 0 || !cfg.sheetId) {
+      renderOrdersFromLocalCache(el, false);
+      return;
+    }
+    var url = cfg.scriptUrl + '?id=' + encodeURIComponent(cfg.sheetId) + '&sheet=' + encodeURIComponent(cfg.sheetName);
+    fetch(url)
+      .then(function (r) { return r.json(); })
+      .then(function (json) {
+        var rows = (json && json.data) || [];
+        if (!rows.length) { el.textContent = 'Aucune commande enregistrée'; return; }
+        var recent = rows.slice(-50).reverse().map(function (r) {
+          return { date: r[0], items: r[1], total: r[2] };
+        });
+        renderOrderTable(el, recent, false);
+      })
+      .catch(function () {
+        renderOrdersFromLocalCache(el, true);
+      });
+  }
+  function renderOrdersFromLocalCache(el, isFallback) {
+    var log = JSON.parse(lsGet('mp_order_log') || '[]');
+    if (!log.length) {
+      el.textContent = isFallback
+        ? 'Classeur injoignable, et aucune commande en cache sur cet appareil'
+        : 'Aucune commande enregistrée';
+      return;
+    }
+    renderOrderTable(el, log, isFallback);
+  }
+  function renderOrderTable(el, orders, isFallback) {
+    var html = '';
+    if (isFallback) {
+      html += '<div class="dash-note">⚠ Classeur Google Sheet injoignable — affichage des commandes en cache sur <strong>cet appareil</strong> uniquement.</div>';
+    }
+    html += '<table class="dash-table">';
     html += '<tr><th>Date</th><th>Articles</th><th>Total</th></tr>';
-    log.forEach(function (o) {
+    orders.forEach(function (o) {
       html += '<tr><td>' + esc(o.date) + '</td><td>' + esc(o.items) + '</td><td class="is-gold">' + esc(o.total) + '</td></tr>';
     });
     html += '</table>';
