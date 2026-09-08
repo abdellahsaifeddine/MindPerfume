@@ -10,7 +10,7 @@ Site vitrine mono-produit — **Mystique · Mon Vétiver** (Eau de Parfum 50ml, 
 3. **Favicon / icône du site** : le logo MP s'affiche dans l'onglet du navigateur,
    les favoris et les résultats Google (favicon.ico + PNG 16/32/192/512 + Apple touch).
 4. **Sécurité renforcée** : échappement HTML anti-XSS, bug localStorage corrigé,
-   `object-src 'none'` ajouté à la CSP. Détails dans `SECURITE.md`.
+   `object-src 'none'` ajouté à la CSP.
 5. **Site plus vivant** : fil d'or de progression en haut de page, reflet doré animé
    sur « Mon Vétiver », particules d'essence dans le hero, Ken Burns lent sur la photo,
    notes olfactives en cascade avec pastilles qui s'allument, boutons magnétiques,
@@ -29,8 +29,7 @@ Site vitrine mono-produit — **Mystique · Mon Vétiver** (Eau de Parfum 50ml, 
 │   ├── img-01..05    → photos produit
 │   ├── favicon-16/32.png, icon-192/512.png, apple-touch-icon.png
 │   └── logo-full.png → logo complet (données structurées Google)
-├── robots.txt / sitemap.xml / CNAME / 404.html / LICENSE.txt
-└── SECURITE.md       → état de la sécurité + 5 min de réglages à faire
+└── robots.txt / sitemap.xml / CNAME / 404.html / LICENSE.txt
 ```
 
 ## Mise en ligne (GitHub Pages)
