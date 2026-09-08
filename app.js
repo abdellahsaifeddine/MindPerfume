@@ -350,6 +350,7 @@ window.FLACON_SRC="assets/img/img-02.jpg";
       alert('Code incorrect.');
     }
   }
+  var _dashAutoRefresh = null;
   function openStats() {
     var page = document.getElementById('statsPage');
     if (!page) return;
@@ -358,6 +359,8 @@ window.FLACON_SRC="assets/img/img-02.jpg";
     page.setAttribute('aria-hidden', 'false');
     refreshStats();
     loadOrderLog();
+    clearInterval(_dashAutoRefresh);
+    _dashAutoRefresh = setInterval(refreshStats, 60000); // auto-actualisation toutes les 60s
   }
   var _dashBound = false;
   function bindDashButtons() {
@@ -399,7 +402,7 @@ window.FLACON_SRC="assets/img/img-02.jpg";
         updateKPIs(json);
         renderSourcesTable(json.sources || []);
         var lu = document.getElementById('lastUpdated');
-        if (lu) lu.textContent = 'Sync GA4 : ' + new Date().toLocaleTimeString('fr-FR');
+        if (lu) lu.textContent = 'Sync GA4 : ' + new Date().toLocaleString('fr-FR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
       })
       .catch(function () {
         if (table) table.innerHTML = '<div class="dash-placeholder" style="color:#c0392b">Erreur de connexion. Vérifiez le déploiement Apps Script.</div>';
@@ -407,11 +410,14 @@ window.FLACON_SRC="assets/img/img-02.jpg";
   }
   function updateKPIs(d) {
     function set(id, val) { var e = document.getElementById(id); if (e) e.textContent = val; }
-    set('kpi-visits', d.users != null ? d.users : '—');
-    set('kpi-orders', d.sessions != null ? d.sessions : '—');
-    set('kpi-revenue', d.pageviews != null ? d.pageviews : '—');
-    if (d.users && d.sessions) {
-      set('kpi-rate', ((d.sessions / d.users) * 100).toFixed(0) + ' %');
+    function fmt(n) { return n != null ? n.toLocaleString('fr-FR') : '—'; }
+    set('kpi-users', fmt(d.users));
+    set('kpi-sessions', fmt(d.sessions));
+    set('kpi-pageviews', fmt(d.pageviews));
+    if (d.users) {
+      set('kpi-rate', (d.sessions / d.users).toFixed(2));
+    } else {
+      set('kpi-rate', '—');
     }
   }
   function renderSourcesTable(sources) {
@@ -421,20 +427,15 @@ window.FLACON_SRC="assets/img/img-02.jpg";
       table.innerHTML = '<div class="dash-placeholder">Aucune donnée GA4 sur la période (7 derniers jours)</div>';
       return;
     }
-    var html = '<table style="width:100%;border-collapse:collapse;">';
-    html += '<tr style="background:var(--paper2)">';
-    html += '<th style="padding:.6rem .8rem;border:1px solid var(--line);font-family:var(--mono);font-size:.55rem;text-align:left;">Source de trafic</th>';
-    html += '<th style="padding:.6rem .8rem;border:1px solid var(--line);font-family:var(--mono);font-size:.55rem;text-align:left;">Utilisateurs</th>';
-    html += '<th style="padding:.6rem .8rem;border:1px solid var(--line);font-family:var(--mono);font-size:.55rem;text-align:left;">Sessions</th>';
-    html += '</tr>';
-    sources.forEach(function (s, i) {
-      var bg = i % 2 === 0 ? 'var(--paper)' : 'var(--cream)';
-      html += '<tr style="background:' + bg + '">';
-      html += '<td style="padding:.6rem .8rem;border:1px solid var(--line);font-family:var(--mono);font-size:.55rem;">' + esc(s.channel) + '</td>';
-      html += '<td style="padding:.6rem .8rem;border:1px solid var(--line);font-family:var(--mono);font-size:.55rem;color:var(--gold);">' + s.users + '</td>';
-      html += '<td style="padding:.6rem .8rem;border:1px solid var(--line);font-family:var(--mono);font-size:.55rem;">' + s.sessions + '</td>';
-      html += '</tr>';
+    var sorted = sources.slice().sort(function (a, b) { return (b.users || 0) - (a.users || 0); });
+    var totalUsers = sorted.reduce(function (n, s) { return n + (s.users || 0); }, 0);
+    var totalSessions = sorted.reduce(function (n, s) { return n + (s.sessions || 0); }, 0);
+    var html = '<table class="dash-table">';
+    html += '<tr><th>Source de trafic</th><th>Utilisateurs</th><th>Sessions</th></tr>';
+    sorted.forEach(function (s) {
+      html += '<tr><td>' + esc(s.channel) + '</td><td class="is-gold">' + esc(s.users) + '</td><td>' + esc(s.sessions) + '</td></tr>';
     });
+    html += '<tr class="dash-table-total"><td>Total</td><td class="is-gold">' + totalUsers + '</td><td>' + totalSessions + '</td></tr>';
     html += '</table>';
     table.innerHTML = html;
   }
@@ -456,11 +457,11 @@ window.FLACON_SRC="assets/img/img-02.jpg";
     var log = JSON.parse(lsGet('mp_order_log') || '[]');
     var el = document.getElementById('orderLog');
     if (!el) return;
-    if (!log.length) { el.textContent = 'Aucune commande'; return; }
-    var html = '<table style="width:100%;border-collapse:collapse;">';
-    html += '<tr style="background:var(--paper2)"><th style="padding:.5rem;border:1px solid var(--line);font-family:var(--mono);font-size:.5rem;text-align:left;">Date</th><th style="padding:.5rem;border:1px solid var(--line);font-family:var(--mono);font-size:.5rem;text-align:left;">Articles</th><th style="padding:.5rem;border:1px solid var(--line);font-family:var(--mono);font-size:.5rem;text-align:left;">Total</th></tr>';
+    if (!log.length) { el.textContent = 'Aucune commande sur cet appareil'; return; }
+    var html = '<table class="dash-table">';
+    html += '<tr><th>Date</th><th>Articles</th><th>Total</th></tr>';
     log.forEach(function (o) {
-      html += '<tr><td style="padding:.5rem;border:1px solid var(--line);font-family:var(--mono);font-size:.55rem;">' + esc(o.date) + '</td><td style="padding:.5rem;border:1px solid var(--line);font-family:var(--mono);font-size:.55rem;">' + esc(o.items) + '</td><td style="padding:.5rem;border:1px solid var(--line);font-family:var(--mono);font-size:.55rem;color:var(--gold);">' + esc(o.total) + '</td></tr>';
+      html += '<tr><td>' + esc(o.date) + '</td><td>' + esc(o.items) + '</td><td class="is-gold">' + esc(o.total) + '</td></tr>';
     });
     html += '</table>';
     el.innerHTML = html;
@@ -470,6 +471,7 @@ window.FLACON_SRC="assets/img/img-02.jpg";
     if (!page) return;
     page.classList.remove('is-open');
     page.setAttribute('aria-hidden', 'true');
+    clearInterval(_dashAutoRefresh);
   }
 
   /* ── PUBLIC API (for inline onclick) ── */

@@ -387,10 +387,11 @@
   <div class="dash-wrap">
 
     <!-- KPIs -->
+    <div class="dash-section-title">Aperçu · 7 derniers jours</div>
     <div class="dash-kpis">
-      <div class="kpi"><div class="kpi-label">Utilisateurs · 7 jours</div><div id="kpi-visits" class="kpi-val">—</div></div>
-      <div class="kpi"><div class="kpi-label">Sessions</div><div id="kpi-orders" class="kpi-val is-gold">—</div></div>
-      <div class="kpi"><div class="kpi-label">Pages vues</div><div id="kpi-revenue" class="kpi-val">—</div></div>
+      <div class="kpi"><div class="kpi-label">Utilisateurs</div><div id="kpi-users" class="kpi-val">—</div></div>
+      <div class="kpi"><div class="kpi-label">Sessions</div><div id="kpi-sessions" class="kpi-val is-gold">—</div></div>
+      <div class="kpi"><div class="kpi-label">Pages vues</div><div id="kpi-pageviews" class="kpi-val">—</div></div>
       <div class="kpi"><div class="kpi-label">Sessions / Utilisateur</div><div id="kpi-rate" class="kpi-val">—</div></div>
     </div>
 
@@ -405,11 +406,15 @@
 
     <!-- Commandes -->
     <div class="dash-card">
-      <div class="dash-card-title" style="margin-bottom:1.5rem">Commandes WhatsApp</div>
-      <div id="orderLog" class="dash-log">Aucune commande</div>
+      <div class="dash-card-head">
+        <div class="dash-card-title">Commandes WhatsApp · cet appareil</div>
+        <a class="dash-meta dash-link" href="https://docs.google.com/spreadsheets/d/1Z2y8IqSGRnw1DtkgHfhwzCjsYAim-t1ZMBcj-cXjKAI/edit" target="_blank" rel="noopener">Voir toutes les commandes ↗</a>
+      </div>
+      <p class="dash-note">Cette liste ne montre que les commandes passées depuis <strong>cet appareil</strong>. Pour l'historique complet de toutes les commandes clients, ouvrez le classeur Google Sheet ci-dessus.</p>
+      <div id="orderLog" class="dash-log">Aucune commande sur cet appareil</div>
     </div>
 
-    <div class="dash-foot">MindPerfume · Dashboard Privé · v2.0 · GA4 connecté</div>
+    <div class="dash-foot">MindPerfume · Dashboard Privé · v2.1 · GA4 connecté</div>
   </div>
 </div>
 
