@@ -1,4 +1,4 @@
-# MindPerfume.ma
+# MindPerfume
 
 Site vitrine mono-produit — **Mystique · Mon Vétiver** (Eau de Parfum 50ml, 300 MAD).
 
@@ -37,7 +37,7 @@ Site vitrine mono-produit — **Mystique · Mon Vétiver** (Eau de Parfum 50ml, 
 
 1. Pousser tous ces fichiers à la racine de la branche `main`.
 2. Settings → Pages → Source : `main` / `/ (root)`.
-3. Le fichier `CNAME` garde le domaine `MindPerfume.ma`.
+3. Le fichier `CNAME` garde le domaine `mindperfume.online`.
 
 ## À propos de l'icône dans Google
 
@@ -48,5 +48,5 @@ Après la mise en ligne : Google Search Console → « Inspection d'URL » →
 
 ## Dashboard privé
 
-Triple-clic sur le logo « MindPerfume.ma » dans le pied de page. Connexion Google
+Triple-clic sur le logo « MindPerfume » dans le pied de page. Connexion Google
 Sheets via Apps Script (guide intégré dans le dashboard).
