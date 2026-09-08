@@ -1,7 +1,7 @@
 window.FLACON_SRC="assets/img/img-02.jpg";
 
 /* ════════════════════════════════════════════
-   MINDPERFUME.MA — Application JS
+   MINDPERFUME — Application JS
    ════════════════════════════════════════════ */
 (function () {
   'use strict';
