@@ -276,25 +276,27 @@ window.FLACON_SRC="assets/img/img-02.jpg";
       });
     }
     var msg = '';
-    msg += 'Bonjour MindPerfume,\n\n';
-    msg += 'Vous etes aux dernieres etapes pour valider votre commande, et vous etes sur la bonne voie !\n\n';
-    msg += 'Voici le recapitulatif de ma selection :\n';
+    msg += 'Bonjour MindPerfume 👋,\n\n';
+    msg += 'Vous etes aux dernieres etapes pour valider votre commande, et vous etes sur la bonne voie ! 🌿\n\n';
+    msg += '🧾 Recapitulatif de ma selection :\n';
     msg += '--------------------------------\n';
     cart.forEach(function (i) {
       msg += '- ' + i.name + '  x' + i.qty + '  =  ' + (i.price * i.qty) + ' MAD\n';
     });
     msg += '--------------------------------\n';
-    msg += 'Total a regler : ' + total + ' MAD\n';
-    msg += '(Livraison dans tout le Maroc)\n\n';
+    msg += '💰 Total a regler : ' + total + ' MAD\n';
+    msg += '🚚 Livraison dans tout le Maroc\n\n';
     msg += 'Il ne me reste plus qu a confirmer ma commande en vous communiquant :\n';
-    msg += '- Mon nom complet :\n';
-    msg += '- Mon adresse de livraison :\n';
-    msg += '- Mon numero de telephone :\n\n';
-    msg += 'Merci, j ai hate de recevoir mon parfum.';
+    msg += '👤 Mon nom complet :\n';
+    msg += '📍 Mon adresse de livraison :\n';
+    msg += '🏘️ Mon quartier (numero) :\n';
+    msg += '📞 Mon numero de telephone :\n';
+    msg += '💬 Un mot pour vous :\n\n';
+    msg += 'Merci 🖤, j ai hate de recevoir mon parfum.';
     if (typeof MP_logOrder === 'function') {
       MP_logOrder(cart.map(function (i) { return i.name + ' x' + i.qty; }).join(', '), total);
     }
-    window.open('https://wa.me/212691658691?text=' + encodeURIComponent(msg), '_blank', 'noopener');
+    window.open('https://wa.me/212769752635?text=' + encodeURIComponent(msg), '_blank', 'noopener');
   }
   function initCart() {
     document.getElementById('cartBtn').addEventListener('click', openCart);
