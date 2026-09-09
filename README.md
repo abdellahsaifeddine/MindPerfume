@@ -6,7 +6,7 @@ Site vitrine mono-produit — **Mystique · Mon Vétiver** (Eau de Parfum 50ml, 
 
 1. **Message WhatsApp pro** : le panier ouvre WhatsApp avec le nouveau template
    (récap 🌿, total, livraison 🚚🇲🇦, infos à compléter, signature MindPerfume 🖤).
-2. **Nouveau numéro de commande** : `+212 625-149343` (panier + lien du footer).
+2. **Numéro de commande** : `+212 769-752635` (panier + lien du footer).
 3. **Favicon / icône du site** : le logo MP s'affiche dans l'onglet du navigateur,
    les favoris et les résultats Google (favicon.ico + PNG 16/32/192/512 + Apple touch).
 4. **Sécurité renforcée** : échappement HTML anti-XSS, bug localStorage corrigé,
